@@ -23,7 +23,6 @@ import static com.voquanghoa.bookstore.models.Constants.AUTHORITIES_KEY;
 @Configuration
 public class TokenProvider{
 
-
     @Value("${jwt-key}")
     private String signingKey;
 

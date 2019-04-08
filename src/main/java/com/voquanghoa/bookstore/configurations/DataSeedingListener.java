@@ -4,20 +4,20 @@ import com.voquanghoa.bookstore.models.Role;
 import com.voquanghoa.bookstore.models.User;
 import com.voquanghoa.bookstore.repositories.RoleRepository;
 import com.voquanghoa.bookstore.repositories.UserRepository;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-import java.security.Key;
 
 import java.util.HashSet;
 
 @Component
+@Configuration
 public class DataSeedingListener implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
@@ -26,35 +26,45 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
     @Autowired
     private RoleRepository roleRepository;
 
+    @Value("${jwt-key}")
+    private String signingKey;
+
+
+    private void addRoleIfMissing(String name, String description){
+        if (roleRepository.findByName(name) == null) {
+            roleRepository.save(new Role(name, description));
+        }
+    }
+
+    private void addUserIfMissing(String username, String password, String... roles){
+        if (userRepository.findByUsername(username) == null) {
+            User user = new User(username, "First name", "Last name", new BCryptPasswordEncoder().encode(password));
+            user.setRoles(new HashSet<>());
+
+            for (String role: roles) {
+                user.getRoles().add(roleRepository.findByName(role));
+            }
+
+            userRepository.save(user);
+        }
+    }
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
 
-        if (roleRepository.findByName("ROLE_ADMIN") == null) {
-            roleRepository.save(new Role("ROLE_ADMIN", "Administrators"));
+        addRoleIfMissing("ROLE_ADMIN", "Administrators");
+        addRoleIfMissing("ROLE_MEMBER", "Members");
+
+        addUserIfMissing("user", "456", "ROLE_MEMBER");
+        addUserIfMissing("admin", "1234", "ROLE_MEMBER", "ROLE_ADMIN");
+
+        if(signingKey == null || signingKey.length() ==0){
+            String jws = Jwts.builder()
+                    .setSubject("BookStore")
+                    .signWith(SignatureAlgorithm.HS256, "BookStoreApi").compact();
+
+            System.out.println("Use this jwt key:");
+            System.out.println("jwt-key=" + jws);
         }
-
-        if (roleRepository.findByName("ROLE_MEMBER") == null) {
-            roleRepository.save(new Role("ROLE_MEMBER", "Members"));
-        }
-
-        if (userRepository.findByUsername("user") == null) {
-            User user = new User("user", "Firstname", "Lastname", new BCryptPasswordEncoder().encode("456"));
-            user.setRoles(new HashSet<>());
-            user.getRoles().add(roleRepository.findByName("ROLE_MEMBER"));
-            userRepository.save(user);
-        }
-
-        if (userRepository.findByUsername("admin") == null) {
-            User admin = new User("admin", "Vo", "Hoa", new BCryptPasswordEncoder().encode("1234"));
-            admin.setRoles(new HashSet<>());
-            admin.getRoles().add(roleRepository.findByName("ROLE_ADMIN"));
-            admin.getRoles().add(roleRepository.findByName("ROLE_MEMBER"));
-            userRepository.save(admin);
-        }
-
-        String jws = Jwts.builder().setSubject("BookStore").signWith(SignatureAlgorithm.HS256, "BookStoreApi").compact();
-
-        System.out.println(jws);
     }
 }
