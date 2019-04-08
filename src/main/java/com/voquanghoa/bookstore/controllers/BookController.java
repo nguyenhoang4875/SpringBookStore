@@ -4,8 +4,10 @@ import com.voquanghoa.bookstore.exceptions.NotFoundException;
 import com.voquanghoa.bookstore.models.Book;
 import com.voquanghoa.bookstore.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.Optional;
 
 @RestController
@@ -26,6 +28,8 @@ public class BookController {
         throw new NotFoundException(String.format("Book id %d not found", id));
     }
 
+    @Secured("ROLE_ADMIN")
+    @RolesAllowed("ROLE_ADMIN")
     @DeleteMapping("/{id}")
     void delete(@PathVariable int id){
 
