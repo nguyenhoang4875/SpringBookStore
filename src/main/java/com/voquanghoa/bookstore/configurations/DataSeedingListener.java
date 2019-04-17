@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import java.util.HashSet;
 
 @Component
 @Configuration
+@Profile({"!test"})
 public class DataSeedingListener implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
@@ -28,6 +30,9 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
 
     @Value("${jwt-key}")
     private String signingKey;
+
+    @Value("${profile-name}")
+    private String profileName;
 
 
     private void addRoleIfMissing(String name, String description){
@@ -66,5 +71,7 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
             System.out.println("Use this jwt key:");
             System.out.println("jwt-key=" + jws);
         }
+
+        System.out.println("Key = " + profileName);
     }
 }
