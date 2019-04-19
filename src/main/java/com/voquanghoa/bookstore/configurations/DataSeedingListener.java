@@ -31,9 +31,6 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
     @Value("${jwt-key}")
     private String signingKey;
 
-    @Value("${profile-name}")
-    private String profileName;
-
 
     private void addRoleIfMissing(String name, String description){
         if (roleRepository.findByName(name) == null) {
@@ -71,7 +68,5 @@ public class DataSeedingListener implements ApplicationListener<ContextRefreshed
             System.out.println("Use this jwt key:");
             System.out.println("jwt-key=" + jws);
         }
-
-        System.out.println("Key = " + profileName);
     }
 }
