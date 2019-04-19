@@ -13,7 +13,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor
-@Table(name = "app_user")
+@Table(name = "app_user", schema="public")
 public class User {
 
     @Id
