@@ -43,8 +43,15 @@ public class BookControllerTest {
 
     @Before
     public void init(){
-        book1 = bookRepository.save(new Book(1, "English"));
-        book2 = bookRepository.save(new Book(2, "Mathematics"));
+
+        book1 = new Book("English");
+        book1.setYear(2000);
+
+        book1 = bookRepository.save(book1);
+
+        book2 = new Book("Mathematics");
+        book2.setYear(2001);
+        book2 = bookRepository.save(book2);
     }
 
     @After
@@ -100,7 +107,12 @@ public class BookControllerTest {
     public void test_put_Found() throws Exception{
 
         Gson gson = new Gson();
-        String json = gson.toJson(new Book(book2.getId(), "Math"));
+
+        Book putBook = new Book("Math");
+        putBook.setId(book2.getId());
+        putBook.setYear(2001);
+        String json = gson.toJson(putBook);
+
 
         mockMvc.perform(put("/api/books")
                 .contentType(MediaType.APPLICATION_JSON).content(json))
@@ -116,7 +128,11 @@ public class BookControllerTest {
     public void test_post_ok() throws Exception{
 
         Gson gson = new Gson();
-        String json = gson.toJson(new Book(0, "Geometry"));
+        Book bookPost = new Book();
+        bookPost.setYear(2001);
+        bookPost.setName("Geometry");
+
+        String json = gson.toJson(bookPost);
 
         mockMvc.perform(put("/api/books")
                 .contentType(MediaType.APPLICATION_JSON).content(json))
@@ -127,5 +143,32 @@ public class BookControllerTest {
         Book book = books.get(books.size()-1);
 
         assertEquals (book.getName(), "Geometry");
+    }
+
+    @Test
+    public void test_post_not_ok() throws Exception{
+
+        Gson gson = new Gson();
+        Book bookPost = new Book();
+
+
+        mockMvc.perform(post("/api/books")
+                .contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bookPost)))
+                .andExpect(status().isBadRequest());
+
+        bookPost.setName("Math");
+        mockMvc.perform(post("/api/books")
+                .contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bookPost)))
+                .andExpect(status().isBadRequest());
+
+        bookPost.setYear(1900);
+        mockMvc.perform(post("/api/books")
+                .contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bookPost)))
+                .andExpect(status().isBadRequest());
+
+        bookPost.setYear(2101);
+        mockMvc.perform(post("/api/books")
+                .contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bookPost)))
+                .andExpect(status().isBadRequest());
     }
 }

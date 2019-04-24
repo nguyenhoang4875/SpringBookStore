@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -44,7 +45,7 @@ public class BookController {
     }
 
     @PostMapping()
-    public void post(@RequestBody Book book){
+    public void post(@Valid @RequestBody Book book){
         book.setId(0);
         bookRepository.save(book);
     }

@@ -4,11 +4,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.annotations.Cascade;
-import org.springframework.beans.factory.annotation.Required;
 
 import javax.persistence.*;
-import java.util.Set;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @Entity
@@ -18,15 +18,16 @@ public class Book {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    @NonNull
     private int id;
 
     @NonNull
+    @NotBlank(message = "Name is mandatory")
     private String name;
 
     @ManyToOne
-    @Cascade(value= {org.hibernate.annotations.CascadeType.MERGE})
     private Author author;
 
+    @Min(value = 1990, message = "Invalid year")
+    @Max(value = 2100, message = "Invalid year")
     private int year;
 }
