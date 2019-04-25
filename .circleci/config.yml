@@ -19,6 +19,8 @@ jobs:
     environment:
       # Customize the JVM maximum heap limit
       MAVEN_OPTS: -Xmx3200m
+      POSTGRES_USER: username
+      POSTGRES_DB: circle_test
 
     steps:
       - checkout
@@ -31,6 +33,9 @@ jobs:
             - v1-dependencies-
 
       - run: mvn dependency:go-offline
+      - run:
+          name: Wait for Postgres to start
+          command: dockerize -wait tcp://localhost:5432 -timeout 1m
 
       - save_cache:
           paths:
