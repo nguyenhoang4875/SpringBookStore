@@ -23,6 +23,6 @@ public class BookstoreApplicationTests {
 
 	@Test
 	public void test_dataSourceUrl(){
-		assertEquals(dataSourceUrl, "jdbc:mysql://localhost:3306/bookstore-test");
+		assertEquals(dataSourceUrl, "jdbc:postgresql://localhost:5432/circle_test");
 	}
 }
