@@ -9,6 +9,7 @@ jobs:
       # specify the version you desire here
       - image: circleci/openjdk:8-jdk
       - image: circleci/postgres:9.4
+
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -35,7 +36,8 @@ jobs:
           name: Wait for Postgres to start
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
-          - command: |
+          name: Preapare db
+          command: |
               psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE circle_test;"
               psql -h 127.0.0.1 -U postgres -c "CREATE USER username WITH PASSWORD 'password'; GRANT ALL PRIVILEGES ON DATABASE circle_test TO username;"
 
