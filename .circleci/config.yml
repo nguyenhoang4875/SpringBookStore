@@ -42,9 +42,7 @@ jobs:
           command: dockerize -wait tcp://localhost:5432 -timeout 1m
       - run:
           name: Preapare db
-          command: |
-              psql -h 127.0.0.1 -U postgres -c "CREATE DATABASE circle_test;"
-              psql -h 127.0.0.1 -U postgres -c "CREATE USER username WITH PASSWORD 'password'; GRANT ALL PRIVILEGES ON DATABASE circle_test TO username;"
+          command: psql -h 127.0.0.1 -U postgres -c "CREATE USER username WITH PASSWORD 'password'; GRANT ALL PRIVILEGES ON DATABASE circle_test TO username;"
 
       - save_cache:
           paths:
