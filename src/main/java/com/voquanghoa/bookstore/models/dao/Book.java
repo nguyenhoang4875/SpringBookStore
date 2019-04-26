@@ -1,4 +1,4 @@
-package com.voquanghoa.bookstore.models;
+package com.voquanghoa.bookstore.models.dao;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

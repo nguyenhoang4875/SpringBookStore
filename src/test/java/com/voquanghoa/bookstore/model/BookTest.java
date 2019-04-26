@@ -1,6 +1,6 @@
 package com.voquanghoa.bookstore.model;
 
-import com.voquanghoa.bookstore.models.Book;
+import com.voquanghoa.bookstore.models.dao.Book;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

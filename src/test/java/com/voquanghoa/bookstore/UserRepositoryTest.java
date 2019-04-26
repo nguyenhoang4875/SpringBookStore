@@ -1,6 +1,6 @@
 package com.voquanghoa.bookstore;
 
-import com.voquanghoa.bookstore.models.User;
+import com.voquanghoa.bookstore.models.dao.User;
 import com.voquanghoa.bookstore.repositories.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;

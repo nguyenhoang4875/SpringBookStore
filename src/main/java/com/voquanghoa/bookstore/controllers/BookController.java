@@ -1,7 +1,7 @@
 package com.voquanghoa.bookstore.controllers;
 
 import com.voquanghoa.bookstore.exceptions.NotFoundException;
-import com.voquanghoa.bookstore.models.Book;
+import com.voquanghoa.bookstore.models.dao.Book;
 import com.voquanghoa.bookstore.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;

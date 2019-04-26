@@ -1,7 +1,6 @@
 package com.voquanghoa.bookstore.controllers;
 
-import com.voquanghoa.bookstore.models.Book;
-import com.voquanghoa.bookstore.models.Category;
+import com.voquanghoa.bookstore.models.dao.Category;
 import com.voquanghoa.bookstore.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

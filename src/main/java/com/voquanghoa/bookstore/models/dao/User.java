@@ -1,6 +1,7 @@
-package com.voquanghoa.bookstore.models;
+package com.voquanghoa.bookstore.models.dao;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.voquanghoa.bookstore.models.dao.Role;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;

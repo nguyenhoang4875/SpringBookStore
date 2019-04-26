@@ -1,4 +1,4 @@
-package com.voquanghoa.bookstore.dao;
+package com.voquanghoa.bookstore.models.dto;
 
 import lombok.Data;
 

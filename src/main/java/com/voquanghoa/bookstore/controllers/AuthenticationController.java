@@ -1,8 +1,8 @@
 package com.voquanghoa.bookstore.controllers;
 
 import com.voquanghoa.bookstore.configurations.TokenProvider;
-import com.voquanghoa.bookstore.dao.Login;
-import com.voquanghoa.bookstore.models.AuthToken;
+import com.voquanghoa.bookstore.models.dto.Login;
+import com.voquanghoa.bookstore.models.dto.AuthToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

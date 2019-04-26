@@ -1,6 +1,6 @@
 package com.voquanghoa.bookstore.repositories;
 
-import com.voquanghoa.bookstore.models.Author;
+import com.voquanghoa.bookstore.models.dao.Author;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

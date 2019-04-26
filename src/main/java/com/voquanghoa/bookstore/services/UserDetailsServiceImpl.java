@@ -1,7 +1,7 @@
 package com.voquanghoa.bookstore.services;
 
-import com.voquanghoa.bookstore.models.Role;
-import com.voquanghoa.bookstore.models.User;
+import com.voquanghoa.bookstore.models.dao.Role;
+import com.voquanghoa.bookstore.models.dao.User;
 import com.voquanghoa.bookstore.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

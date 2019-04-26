@@ -1,7 +1,7 @@
 package com.voquanghoa.bookstore;
 
 import com.google.gson.Gson;
-import com.voquanghoa.bookstore.models.Book;
+import com.voquanghoa.bookstore.models.dao.Book;
 import com.voquanghoa.bookstore.repositories.BookRepository;
 import org.hamcrest.Matchers;
 import org.junit.After;

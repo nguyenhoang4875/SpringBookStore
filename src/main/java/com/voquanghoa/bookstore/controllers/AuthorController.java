@@ -1,11 +1,8 @@
 package com.voquanghoa.bookstore.controllers;
 
-import com.voquanghoa.bookstore.models.Author;
-import com.voquanghoa.bookstore.models.Book;
+import com.voquanghoa.bookstore.models.dao.Author;
 import com.voquanghoa.bookstore.repositories.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
