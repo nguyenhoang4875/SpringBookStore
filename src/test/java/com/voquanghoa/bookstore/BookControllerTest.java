@@ -2,6 +2,7 @@ package com.voquanghoa.bookstore;
 
 import com.google.gson.Gson;
 import com.voquanghoa.bookstore.models.dao.Book;
+import com.voquanghoa.bookstore.models.dto.BookDTO;
 import com.voquanghoa.bookstore.repositories.BookRepository;
 import org.hamcrest.Matchers;
 import org.junit.After;
@@ -108,7 +109,8 @@ public class BookControllerTest {
 
         Gson gson = new Gson();
 
-        Book putBook = new Book("Math");
+        BookDTO putBook = new BookDTO();
+        putBook.setName("Math");
         putBook.setId(book2.getId());
         putBook.setYear(2001);
         String json = gson.toJson(putBook);
@@ -128,7 +130,7 @@ public class BookControllerTest {
     public void test_post_ok() throws Exception{
 
         Gson gson = new Gson();
-        Book bookPost = new Book();
+        BookDTO bookPost = new BookDTO();
         bookPost.setYear(2001);
         bookPost.setName("Geometry");
 
@@ -149,7 +151,7 @@ public class BookControllerTest {
     public void test_post_not_ok() throws Exception{
 
         Gson gson = new Gson();
-        Book bookPost = new Book();
+        BookDTO bookPost = new BookDTO();
 
 
         mockMvc.perform(post("/api/books")

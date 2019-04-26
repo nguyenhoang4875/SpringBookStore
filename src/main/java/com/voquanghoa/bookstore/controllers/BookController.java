@@ -1,7 +1,9 @@
 package com.voquanghoa.bookstore.controllers;
 
+import com.voquanghoa.bookstore.converters.bases.Converter;
 import com.voquanghoa.bookstore.exceptions.NotFoundException;
 import com.voquanghoa.bookstore.models.dao.Book;
+import com.voquanghoa.bookstore.models.dto.BookDTO;
 import com.voquanghoa.bookstore.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -15,14 +17,20 @@ import java.util.Optional;
 public class BookController {
 
     @Autowired
+    private Converter<BookDTO, Book> bookDTOBookConverter;
+
+    @Autowired
+    private Converter<Book, BookDTO> bookBookDTOConverter;
+
+    @Autowired
     private BookRepository bookRepository;
 
     @GetMapping("/{id}")
-    public Book get(@PathVariable int id){
+    public BookDTO get(@PathVariable int id){
         Optional<Book> optionalBook = bookRepository.findById(id);
 
         if(optionalBook.isPresent()){
-            return optionalBook.get();
+            return bookBookDTOConverter.convert(optionalBook.get());
         }
 
         throw new NotFoundException(String.format("Book id %d not found", id));
@@ -40,14 +48,14 @@ public class BookController {
     }
 
     @GetMapping
-    public Iterable<Book> get(){
-        return  bookRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+    public Iterable<BookDTO> get(){
+        return  bookBookDTOConverter.convert(bookRepository.findAll(Sort.by(Sort.Direction.ASC, "id")));
     }
 
     @PostMapping()
-    public void post(@Valid @RequestBody Book book){
+    public void post(@Valid @RequestBody BookDTO book){
         book.setId(0);
-        bookRepository.save(book);
+        bookRepository.save(bookDTOBookConverter.convert(book));
     }
 
     @GetMapping("/find")
