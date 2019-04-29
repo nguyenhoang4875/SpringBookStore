@@ -5,7 +5,6 @@ import com.voquanghoa.bookstore.models.dao.Author;
 import com.voquanghoa.bookstore.models.dao.Book;
 import com.voquanghoa.bookstore.models.dto.BookDTO;
 import com.voquanghoa.bookstore.repositories.AuthorRepository;
-import com.voquanghoa.bookstore.repositories.BookRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,5 +59,4 @@ public class BookDtoToBookDaoConverterTest {
         book = bookDtoToBookDaoConverter.convert(bookDTO);
         assertEquals(book.getAuthor().getId(), author.getId());
     }
-
 }

@@ -17,8 +17,9 @@ public class BookDtoToBookDaoConverter extends Converter<BookDTO, Book> {
     @Autowired
     private AuthorRepository authorRepository;
 
+
     @Override
-    public Book convert(BookDTO source) throws BadRequestException {
+    public Book convert(BookDTO source) {
 
         Book book = new Book();
 
@@ -36,8 +37,6 @@ public class BookDtoToBookDaoConverter extends Converter<BookDTO, Book> {
             }
         }
 
-
         return book;
     }
-    
 }

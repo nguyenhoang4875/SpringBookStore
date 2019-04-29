@@ -1,20 +1,22 @@
 package com.voquanghoa.bookstore.models.dto;
 
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 
 @Data
 public class BookDTO {
     int id;
 
-    @Length(min=5, max=1024)
+    @NotBlank(message = "Name is mandatory")
     String name;
 
 
     int authorId;
 
-    @Min(1990)
+    @Min(value = 1990, message = "Invalid year")
+    @Max(value = 2100, message = "Invalid year")
     int year;
 }
