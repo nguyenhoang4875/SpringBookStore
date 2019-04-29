@@ -1,9 +1,12 @@
 package com.voquanghoa.bookstore;
 
 import com.google.gson.Gson;
+import com.voquanghoa.bookstore.configurations.TokenProvider;
 import com.voquanghoa.bookstore.models.dao.Book;
+import com.voquanghoa.bookstore.models.dto.AuthToken;
 import com.voquanghoa.bookstore.models.dto.BookDTO;
 import com.voquanghoa.bookstore.repositories.BookRepository;
+import com.voquanghoa.bookstore.repositories.UserRepository;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
@@ -14,6 +17,11 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -42,6 +50,14 @@ public class BookControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private TokenProvider jwtTokenUtil;
+
+    private String token;
+
     @Before
     public void init(){
 
@@ -53,6 +69,17 @@ public class BookControllerTest {
         book2 = new Book("Mathematics");
         book2.setYear(2001);
         book2 = bookRepository.save(book2);
+
+
+        final Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        "user",
+                        "456"
+                )
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        token = "Bearer " + jwtTokenUtil.generateToken(authentication);
+
     }
 
     @After
@@ -62,7 +89,7 @@ public class BookControllerTest {
 
     @Test
     public void test_getAllBook() throws Exception{
-        mockMvc.perform(get("/api/books"))
+        mockMvc.perform(get("/api/books").header("Authorization", token))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -75,7 +102,7 @@ public class BookControllerTest {
 
     @Test
     public void test_getBook_Found() throws Exception{
-        mockMvc.perform(get("/api/books/" + book2.getId()))
+        mockMvc.perform(get("/api/books/" + book2.getId()).header("Authorization", token))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -85,14 +112,14 @@ public class BookControllerTest {
 
     @Test
     public void test_getBook_NotFound() throws Exception{
-        mockMvc.perform(get("/api/books/" + (book2.getId() + book1.getId())))
+        mockMvc.perform(get("/api/books/" + (book2.getId() + book1.getId())).header("Authorization", token))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
 
     @Test
     public void test_deleteBook_NotFound() throws Exception{
-        mockMvc.perform(delete("/api/books/" + (book2.getId() + book1.getId())))
+        mockMvc.perform(delete("/api/books/" + (book2.getId() + book1.getId())).header("Authorization", token))
                 .andExpect(status().isNotFound());
     }
 
@@ -116,7 +143,7 @@ public class BookControllerTest {
         String json = gson.toJson(putBook);
 
 
-        mockMvc.perform(put("/api/books")
+        mockMvc.perform(put("/api/books").header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpect(status().isOk());
 
@@ -136,7 +163,7 @@ public class BookControllerTest {
 
         String json = gson.toJson(bookPost);
 
-        mockMvc.perform(put("/api/books")
+        mockMvc.perform(put("/api/books").header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpect(status().isOk());
 
@@ -154,22 +181,22 @@ public class BookControllerTest {
         BookDTO bookPost = new BookDTO();
 
 
-        mockMvc.perform(post("/api/books")
+        mockMvc.perform(post("/api/books").header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bookPost)))
                 .andExpect(status().isBadRequest());
 
         bookPost.setName("Math");
-        mockMvc.perform(post("/api/books")
+        mockMvc.perform(post("/api/books").header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bookPost)))
                 .andExpect(status().isBadRequest());
 
         bookPost.setYear(1900);
-        mockMvc.perform(post("/api/books")
+        mockMvc.perform(post("/api/books").header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bookPost)))
                 .andExpect(status().isBadRequest());
 
         bookPost.setYear(2101);
-        mockMvc.perform(post("/api/books")
+        mockMvc.perform(post("/api/books").header("Authorization", token)
                 .contentType(MediaType.APPLICATION_JSON).content(gson.toJson(bookPost)))
                 .andExpect(status().isBadRequest());
     }

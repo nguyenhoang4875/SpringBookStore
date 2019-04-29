@@ -19,7 +19,6 @@ import java.util.HashSet;
 
 @Component
 @Configuration
-@Profile({"!test"})
 public class DataSeedingListener implements ApplicationListener<ContextRefreshedEvent> {
 
     @Autowired
