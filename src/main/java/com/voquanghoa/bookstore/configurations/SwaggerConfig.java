@@ -25,14 +25,14 @@ public class SwaggerConfig {
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfo("My REST API",
-                "Some custom description of API.",
-                "API TOS",
+        return new ApiInfo("Book API",
+                "Demo spring boot API.",
+                "1.0",
                 "Terms of service",
                 new Contact(
-                        "John Doe",
-                        "www.example.com",
-                        "myeaddress@company.com"),
+                        "Hoa Vo",
+                        "https://hoa-bookstore.herokuapp.com",
+                        "voquanghoa@gmail.com"),
                 "License of API",
                 "API license URL",
                 Collections.emptyList());
