@@ -31,7 +31,7 @@ public class SwaggerConfig {
                 "Terms of service",
                 new Contact(
                         "Hoa Vo",
-                        "https://hoa-bookstore.herokuapp.com",
+                        "http://github.com/voquanghoa",
                         "voquanghoa@gmail.com"),
                 "License of API",
                 "API license URL",
